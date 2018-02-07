@@ -11,9 +11,8 @@
             <div class="field">
               <div class="ui left icon input" placeholder="Username/Email address">
                 <input
-                @input="updatedForm"
+                v-model="username"
                 name="username"
-                v-model="form.username"
                 placeholder="Username/Email address">
                 <i class="user icon"></i>
               </div>
@@ -21,16 +20,15 @@
             <div class="field">
               <div class="ui left icon input" type="password" placeholder="Password">
                 <input
-                @input="updatedForm"
+                v-model="password"
                 name="password"
-                v-model="form.password"
                 type="password"
                 placeholder="Password">
                 <i class="lock icon"></i>
               </div>
             </div>
             <button
-            @click="login('login')"
+            @click="onClickLogin(username, password)"
             role="button"
             class="ui teal fluid large button">Login</button>
           </div>
@@ -45,20 +43,22 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-// import * as types from './mutation-types';
 
 export default {
   name: 'Login',
   data() {
-    return {};
+    return {
+      username: null,
+      password: null,
+    };
   },
   methods: {
-    ...mapActions(['login', 'updatePassword']),
-    login() {
-      this.$store.dispatch('login', { username: 'sys', password: '12' });
+    // ...mapActions(['login', 'updateForm']),
+    async onClickLogin(username, password) {
+      this.$store.dispatch('login', { username, password });
     },
-    updatedForm(e) {
-      this.$store.dispatch('updatePassword', this.form);
+    updateForm(field, value) {
+      this.$store.dispatch('updateForm', { field, value });
     },
   },
   computed: {
