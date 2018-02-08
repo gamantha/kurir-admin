@@ -54,7 +54,12 @@ export default {
   },
   methods: {
     async onClickLogin(username, password) {
-      this.$store.dispatch('login', { username, password });
+      await this.$store.dispatch('login', { username, password });
+      this.$notify({
+        group: 'login',
+        title: 'Info',
+        text: this.message.message,
+      });
     },
   },
   computed: {
