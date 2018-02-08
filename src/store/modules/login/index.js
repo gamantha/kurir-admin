@@ -7,10 +7,6 @@ import { login } from './actions';
 const initialState = {
   loading: false,
   message: null,
-  form: {
-    username: null,
-    password: null,
-  },
   user: null,
   status: null,
 };
@@ -19,20 +15,16 @@ const initialState = {
 const getters = {
   loading: state => state.loading,
   message: state => state.message,
-  form: state => state.form,
 };
 
 // actions
 const actions = {
   async login({ commit }, payload) {
-    // const result = await login(payload).then(res => res.data);
-    // console.log(result);
+    const result = await login(payload);
     commit(types.LOADING);
-    commit(types.MESSAGE, await login(payload));
+    commit(types.MESSAGE, result.meta);
     commit(types.FINISHED);
-  },
-  updateForm({ commit }, payload) {
-    commit(types.UPDATE_FORM, payload);
+    commit(types.USER, result.data.User);
   },
 };
 
@@ -51,13 +43,8 @@ const mutations = {
   FINISHED(state) {
     state.loading = false;
   },
-  LOGIN(state, payload) {
+  USER(state, payload) {
     state.user = payload;
-  },
-  UPDATE_FORM(state, { field, value }) {
-    Object.assign(state.form, {
-      [field]: value,
-    });
   },
 };
 

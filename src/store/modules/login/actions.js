@@ -7,11 +7,11 @@ const instance = axios.create({
 
 export const login = async (payload) => {
   try {
-    // eslint-disable-next-line
-    console.log(payload);
-    const message = await instance.post('api/user/login', payload);
-    return message.data.meta;
+    const result = await instance.post('api/user/login', payload);
+    return result.data;
   } catch (error) {
-    return error.response.data.meta;
+    return error.response.data;
   }
 };
+
+export const test = () => {};
