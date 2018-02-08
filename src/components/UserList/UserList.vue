@@ -1,6 +1,14 @@
 <template>
   <div>
-    <h1>Test</h1>
+    <data-tables :data="users">
+      <el-table-column
+        v-for="title in titles"
+        :prop="title.prop"
+        :label="title.label"
+        :key="title.label"
+        sortable="custom">
+    </el-table-column>
+  </data-tables>
   </div>
 </template>
 
@@ -10,15 +18,29 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'UserList',
   data() {
-    return {};
+    return {
+      titles: [
+        {
+          prop: 'username',
+          label: 'username',
+        },
+        {
+          prop: 'role',
+          label: 'role',
+        },
+      ],
+    };
   },
   methods: {
     async initUser() {
-      await this.$store.dispatch('gets');
+      const res = await this.$store.dispatch('gets');
     },
   },
-  created() {
-    this.initUser();
+  mounted() {
+    const init = this.initUser();
+  },
+  computed: {
+    ...mapGetters(['users']),
   },
 };
 </script>
