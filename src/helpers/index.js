@@ -10,7 +10,7 @@ class Helpers {
     });
     this.authInstance = axios.create({
       baseURL: 'http://localhost:3000/',
-      headers: { Authorization },
+      headers: { Authorization: `bearer ${Authorization}` },
     });
   }
 }
