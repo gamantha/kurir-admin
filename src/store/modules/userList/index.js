@@ -21,8 +21,8 @@ const actions = {
 
 const mutations = {
   GETS(state, payload) {
-    if (payload.success) {
-      state.users = payload;
+    if (payload.meta.success) {
+      state.users = payload.data;
     } else {
       state.users = [];
     }
