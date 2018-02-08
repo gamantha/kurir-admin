@@ -53,16 +53,12 @@ export default {
     };
   },
   methods: {
-    // ...mapActions(['login', 'updateForm']),
     async onClickLogin(username, password) {
       this.$store.dispatch('login', { username, password });
     },
-    updateForm(field, value) {
-      this.$store.dispatch('updateForm', { field, value });
-    },
   },
   computed: {
-    ...mapGetters(['loading', 'message', 'form']),
+    ...mapGetters(['loading', 'message']),
   },
 };
 </script>
