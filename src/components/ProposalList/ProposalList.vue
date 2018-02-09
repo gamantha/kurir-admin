@@ -3,7 +3,9 @@
     <data-tables
     :data="proposals"
     :checkbox-filter-def="checkboxFilterDef"
-    :table-props="tableProps">
+    :table-props="tableProps"
+    :pagination-def="paginationDef"
+    >
     >
       <el-table-column
         v-for="title in titles"
@@ -30,6 +32,7 @@ export default {
   name: 'ProposalList',
   data() {
     return {
+      message: null,
       titles: [
         {
           prop: 'User',
@@ -85,17 +88,27 @@ export default {
         ],
       },
       tableProps: {
-        border: false,
+        border: true,
         stripe: false,
+      },
+      paginationDef: {
+        pageSize: 5,
+        pageSizes: [5, 10, 15],
+        currentPage: 1,
       },
     };
   },
   methods: {
     async initUser() {
-      const res = await this.$store.dispatch('gets');
+      await this.$store.dispatch('gets');
     },
-    handleClick(command) {
-      this.$message(`click drapdown button ${command}`);
+    async updatePropose(payload) {
+      await this.$store.dispatch('updatePropose', payload);
+      this.$notify({
+        group: 'proposal',
+        title: 'Info',
+        text: this.proposalMessage,
+      });
     },
     customButtonsForRow(row) {
       if (row.status === 'waiting') {
@@ -103,13 +116,23 @@ export default {
           {
             name: 'Accept',
             handler: _ => {
-              this.$message(`Accepted user ${row.User}`);
+              const payload = {
+                status: 'verified',
+                userId: row.UserId,
+              };
+              this.updatePropose(payload);
+              // this.$message(`${row.User} diterima sebagai kurir`);
             },
           },
           {
             name: 'Reject',
             handler: _ => {
-              this.$message(`Rejected ${row.User}`);
+              const payload = {
+                status: 'rejected',
+                userId: row.UserId,
+              };
+              this.updatePropose(payload);
+              // this.$message(`${row.User} ditolak sebagai kurir`);
             },
           },
         ];
@@ -118,7 +141,12 @@ export default {
           {
             name: 'Waiting',
             handler: _ => {
-              this.$message(`${row.User} status now waiting`);
+              const payload = {
+                status: 'waiting',
+                userId: row.UserId,
+              };
+              this.updatePropose(payload);
+              // this.$message(`${row.User} statusnya waiting`);
             },
           },
         ];
@@ -129,7 +157,7 @@ export default {
     const init = this.initUser();
   },
   computed: {
-    ...mapGetters(['proposals']),
+    ...mapGetters(['proposals', 'proposalMessage']),
   },
 };
 </script>
