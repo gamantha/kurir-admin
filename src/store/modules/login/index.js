@@ -1,4 +1,6 @@
-import * as types from '../../../components/Login/mutation-types';
+import VueCookie from 'vue-cookie';
+import router from '../../../router';
+import * as types from './mutation-types';
 
 import { login } from './actions';
 
@@ -22,9 +24,9 @@ const actions = {
   async login({ commit }, payload) {
     const result = await login(payload);
     commit(types.LOADING);
+    commit(types.USER, result.data);
     commit(types.MESSAGE, result.meta);
     commit(types.FINISHED);
-    commit(types.USER, result.data.User);
   },
 };
 
@@ -34,6 +36,8 @@ const mutations = {
   },
   MESSAGE(state, payload) {
     if (payload.success) {
+      VueCookie.set('token', state.user.accessToken);
+      router.push('proposal');
       state.status = true;
     } else {
       state.status = false;
