@@ -11,4 +11,11 @@ export const gets = async () => {
   }
 };
 
-export const test = () => {};
+export const updatePropose = async (payload) => {
+  try {
+    const result = await helpers.authInstance.put('api/user/update-propose', payload);
+    return result.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
