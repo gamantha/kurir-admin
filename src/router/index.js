@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Login from '../components/Login/Login';
-import UserList from '../components/UserList/UserList';
+import ProposalList from '../components/ProposalList/ProposalList';
 
 Vue.use(Router);
 
@@ -13,9 +13,9 @@ export default new Router({
       component: Login,
     },
     {
-      path: '/user-list',
-      name: 'UserList',
-      component: UserList,
+      path: '/proposal',
+      name: 'ProposalList',
+      component: ProposalList,
     },
   ],
 });
