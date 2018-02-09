@@ -1,13 +1,19 @@
-import axios from 'axios';
-import { baseUrl } from '../../../helpers/index';
+import Helpers from '../../../helpers';
 
-const instance = axios.create({
-  baseURL: baseUrl.dev,
-});
+const helpers = new Helpers();
+
+// router.beforeEach((to, from, next) => {
+//   // const authRequired = to.name('Login');
+//   if (store.state.loginState.status) {
+//     next('/user-list');
+//   } else {
+//     next('/');
+//   }
+// });
 
 export const login = async (payload) => {
   try {
-    const result = await instance.post('api/user/login', payload);
+    const result = await helpers.allInstance.post('api/user/login', payload);
     return result.data;
   } catch (error) {
     return error.response.data;
