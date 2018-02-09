@@ -1,43 +1,48 @@
-import * as types from '../../../components/ProposalList/mutation-types';
-import Helpers from '../../../helpers';
+import * as types from './mutation-types';
+import ProposalService from './service';
 
-import { gets } from './actions';
+import { gets, updatePropose } from './actions';
 
 const initialState = {
   proposals: [],
+  proposalMessage: null,
 };
 
 // getters
 const getters = {
   proposals: state => state.proposals,
+  proposalMessage: state => state.proposalMessage,
 };
 
 // actions
 const actions = {
-  async gets({ commit }, payload) {
-    const result = await gets(payload);
+  async gets({ commit }) {
+    const result = await gets();
     commit(types.GETS, result);
+  },
+  async updatePropose({ commit }, payload) {
+    const result = await updatePropose(payload);
+    const getAgain = await gets();
+    commit(types.UPDATE_PROPOSE, result);
+    commit(types.GETS, getAgain);
   },
 };
 
 const mutations = {
   GETS(state, payload) {
     if (payload.meta.success) {
-      const encodedDate = [];
-      payload.data.forEach((each) => {
-        const propose = Helpers.decodeDate(each.proposeDate);
-        const reject = Helpers.decodeDate(each.rejectDate);
-        const accept = Helpers.decodeDate(each.acceptDate);
-        const email = each.User.email;
-        each.proposeDate = propose !== 'Invalid date' ? propose : null;
-        each.rejectDate = reject !== 'Invalid date' ? reject : null;
-        each.acceptDate = accept !== 'Invalid date' ? accept : null;
-        each.User = email;
-        encodedDate.push(each);
-      });
-      state.proposals = encodedDate;
+      state.proposals = ProposalService.encodeDate(payload.data);
     } else {
       state.proposals = [];
+    }
+  },
+  UPDATE_PROPOSE(state, payload) {
+    // const affectedRow = state.proposals.filter(each => each.UserId === payload.data.userId);
+    // const affectedIdx = state.proposals.findIndex(each => each.UserId === payload.data.userId);
+    if (payload.meta.success) {
+      state.proposalMessage = payload.meta.message;
+    } else {
+      state.proposalMessage = payload.meta.message;
     }
   },
 };
