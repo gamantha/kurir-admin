@@ -12,6 +12,13 @@
         :key="title.label"
         sortable="custom">
     </el-table-column>
+    <el-table-column label="Actions" min-width="100px">
+      <template scope="scope">
+        <el-button v-for="button in customButtonsForRow(scope.row)" :key="button.name" type="text" @click="button.handler">
+          {{ button.name }}
+        </el-button>
+      </template>
+    </el-table-column>
   </data-tables>
   </div>
 </template>
@@ -86,6 +93,36 @@ export default {
   methods: {
     async initUser() {
       const res = await this.$store.dispatch('gets');
+    },
+    handleClick(command) {
+      this.$message(`click drapdown button ${command}`);
+    },
+    customButtonsForRow(row) {
+      if (row.status === 'waiting') {
+        return [
+          {
+            name: 'Accept',
+            handler: _ => {
+              this.$message(`Accepted user ${row.User}`);
+            },
+          },
+          {
+            name: 'Reject',
+            handler: _ => {
+              this.$message(`Rejected ${row.User}`);
+            },
+          },
+        ];
+      } else {
+        return [
+          {
+            name: 'Waiting',
+            handler: _ => {
+              this.$message(`${row.User} status now waiting`);
+            },
+          },
+        ];
+      }
     },
   },
   mounted() {
