@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 import VueCookie from 'vue-cookie';
 
 const Authorization = VueCookie.get('token');
@@ -13,8 +14,10 @@ class Helpers {
       headers: { Authorization: `bearer ${Authorization}` },
     });
   }
+
+  static decodeDate(time) {
+    return moment(time).format('D MMM YYYY');
+  }
 }
 
-const helpers = new Helpers();
-
-export default helpers;
+export default Helpers;
