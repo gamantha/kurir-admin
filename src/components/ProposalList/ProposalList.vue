@@ -1,32 +1,39 @@
 <template>
   <div>
-    <data-tables
-    :data="proposals"
-    :checkbox-filter-def="checkboxFilterDef"
-    :table-props="tableProps"
-    :pagination-def="paginationDef"
-    >
-    >
-      <el-table-column
-        v-for="title in titles"
+    <navbar/>
+    <div class="top">
+      <data-tables
+      :data="proposals"
+      :checkbox-filter-def="checkboxFilterDef"
+      :table-props="tableProps"
+      :pagination-def="paginationDef">
+        >
+        <el-table-column v-for="title in titles"
         :prop="title.prop"
         :label="title.label"
         :key="title.label"
         sortable="custom">
-    </el-table-column>
-    <el-table-column label="Actions" min-width="100px">
-      <template scope="scope">
-        <el-button v-for="button in customButtonsForRow(scope.row)" :key="button.name" type="text" @click="button.handler">
-          {{ button.name }}
-        </el-button>
-      </template>
-    </el-table-column>
-  </data-tables>
+        </el-table-column>
+        <el-table-column label="Actions" min-width="100px">
+          <template scope="scope">
+            <el-button v-for="button in customButtonsForRow(scope.row)"
+            :key="button.name"
+            type="text"
+            @click="button.handler">
+              {{ button.name }}
+            </el-button>
+          </template>
+        </el-table-column>
+      </data-tables>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import VueCookie from 'vue-cookie';
+import store from '../../store';
+import Navbar from '../Navbar/Navbar';
 
 export default {
   name: 'ProposalList',
@@ -98,12 +105,18 @@ export default {
       },
     };
   },
+  components: {
+    navbar: Navbar,
+  },
   methods: {
-    async initUser() {
-      await this.$store.dispatch('gets');
+    async initProposal() {
+      const Authorization = {
+        Authorization: `bearer ${VueCookie.get('token')}`,
+      };
+      await this.$store.dispatch('getProposal', Authorization);
     },
     async updatePropose(payload) {
-      await this.$store.dispatch('updatePropose', payload);
+      await this.$store.dispatch('updateProposal', payload);
       this.$notify({
         group: 'proposal',
         title: 'Info',
@@ -154,7 +167,7 @@ export default {
     },
   },
   mounted() {
-    const init = this.initUser();
+    this.initProposal();
   },
   computed: {
     ...mapGetters(['proposals', 'proposalMessage']),
@@ -163,5 +176,7 @@ export default {
 </script>
 
 <style scoped>
-
+.top {
+  margin: 20px;
+}
 </style>
