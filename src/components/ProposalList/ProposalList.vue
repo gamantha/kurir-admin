@@ -32,7 +32,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import VueCookie from 'vue-cookie';
-import store from '../../store';
 import Navbar from '../Navbar/Navbar';
 
 export default {
@@ -128,7 +127,7 @@ export default {
         return [
           {
             name: 'Accept',
-            handler: _ => {
+            handler: () => {
               const payload = {
                 status: 'verified',
                 userId: row.UserId,
@@ -139,7 +138,7 @@ export default {
           },
           {
             name: 'Reject',
-            handler: _ => {
+            handler: () => {
               const payload = {
                 status: 'rejected',
                 userId: row.UserId,
@@ -149,21 +148,20 @@ export default {
             },
           },
         ];
-      } else {
-        return [
-          {
-            name: 'Waiting',
-            handler: _ => {
-              const payload = {
-                status: 'waiting',
-                userId: row.UserId,
-              };
-              this.updatePropose(payload);
-              // this.$message(`${row.User} statusnya waiting`);
-            },
-          },
-        ];
       }
+      return [
+        {
+          name: 'Waiting',
+          handler: () => {
+            const payload = {
+              status: 'waiting',
+              userId: row.UserId,
+            };
+            this.updatePropose(payload);
+            // this.$message(`${row.User} statusnya waiting`);
+          },
+        },
+      ];
     },
   },
   mounted() {

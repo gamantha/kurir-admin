@@ -1,4 +1,3 @@
-import VueCookie from 'vue-cookie';
 import * as types from './mutation-types';
 import ProposalService from './service';
 

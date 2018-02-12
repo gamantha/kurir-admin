@@ -7,7 +7,6 @@
     mode="horizontal"
     @select="handleSelect"
     router="router"
-  
       >
       <el-menu-item index="proposal">
         <router-link to="proposal">Proposal List</router-link>
@@ -24,8 +23,6 @@
 </template>
 
 <script>
-import router from '../../router';
-
 export default {
   name: 'Navbar',
   data() {
@@ -35,7 +32,7 @@ export default {
     };
   },
   methods: {
-    handleSelect(key, keyPath) {
+    handleSelect(key) {
       this.activeIdx = key;
     },
   },
