@@ -16,7 +16,7 @@ class Helpers {
   }
 
   static decodeDate(time) {
-    return moment(time).format('dddd D MMM YYYY');
+    return moment(time).format('D MMM YYYY');
   }
 }
 
