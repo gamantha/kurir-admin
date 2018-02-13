@@ -1,3 +1,4 @@
+import ElementUI from 'element-ui';
 import * as types from './mutation-types';
 import ProposalService from './service';
 
@@ -24,6 +25,25 @@ const actions = {
     const result = await updateProposal(payload);
     const getAgain = await gets();
     commit(types.UPDATE_PROPOSAL, result);
+    const msg = `${payload.status}`;
+    if (msg === 'verified') {
+      ElementUI.Message({
+        message: `User dengan ID ${payload.userId} berhasil diverifikasi. Role baru: sender+kurir`,
+        type: 'success',
+      });
+    } else if (msg === 'rejected') {
+      ElementUI.Message({
+        message: `User dengan ID ${payload.userId} ditolak menjadi kurir.`,
+        type: 'success',
+      });
+    } else {
+      ElementUI.Message({
+        message: `User dengan ID ${
+          payload.userId
+        } status proposalnya menjadi waiting. Role baru: sender`,
+        type: 'success',
+      });
+    }
     commit(types.GET_PROPOSAL, getAgain);
   },
 };
@@ -43,6 +63,7 @@ const mutations = {
       state.proposalMessage = payload.meta.message;
     } else {
       state.proposalMessage = payload.meta.message;
+      ElementUI.Message(payload.meta.message);
     }
   },
 };

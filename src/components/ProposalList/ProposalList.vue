@@ -112,11 +112,6 @@ export default {
     },
     async updatePropose(payload) {
       await this.$store.dispatch('updateProposal', payload);
-      this.$notify({
-        group: 'proposal',
-        title: 'Info',
-        text: this.proposalMessage,
-      });
     },
     customButtonsForRow(row) {
       if (row.status === 'waiting') {
