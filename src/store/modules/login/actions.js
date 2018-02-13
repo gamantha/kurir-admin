@@ -13,7 +13,7 @@ const helpers = new Helpers();
 
 export const login = async (payload) => {
   try {
-    const result = await helpers.allInstance.post('api/user/login', payload);
+    const result = await helpers.instance.post('api/user/login', payload);
     return result.data;
   } catch (error) {
     return error.response.data;
