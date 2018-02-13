@@ -2,17 +2,19 @@ import ElementUI from 'element-ui';
 import * as types from './mutation-types';
 import ProposalService from './service';
 
-import { gets, updateProposal } from './actions';
+import { gets, createSiteAdmin, updateProposal } from './actions';
 
 const initialState = {
   proposals: [],
   proposalMessage: null,
+  siteAdminMsg: null,
 };
 
 // getters
 const getters = {
   proposals: state => state.proposals,
   proposalMessage: state => state.proposalMessage,
+  siteAdminMsg: state => state.siteAdminMsg,
 };
 
 // actions
@@ -46,6 +48,10 @@ const actions = {
     }
     commit(types.GET_PROPOSAL, getAgain);
   },
+  async createSiteAdmin({ commit }, payload) {
+    const result = await createSiteAdmin(payload);
+    commit(types.CREATE_SITE_ADMIN, result);
+  },
 };
 
 const mutations = {
@@ -63,7 +69,25 @@ const mutations = {
       state.proposalMessage = payload.meta.message;
     } else {
       state.proposalMessage = payload.meta.message;
-      ElementUI.Message(payload.meta.message);
+      ElementUI.Message({
+        message: `${payload.meta.message}`,
+        type: 'error',
+      });
+    }
+  },
+  CREATE_SITE_ADMIN(state, payload) {
+    if (payload.meta.success) {
+      state.siteAdminMsg = payload.meta.message;
+      ElementUI.Message({
+        message: `${payload.meta.message}`,
+        type: 'success',
+      });
+    } else {
+      state.siteAdminMsg = payload.meta.message;
+      ElementUI.Message({
+        message: `${payload.meta.message}`,
+        type: 'error',
+      });
     }
   },
 };
