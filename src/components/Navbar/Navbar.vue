@@ -2,7 +2,6 @@
   <div>
     <div class="line"></div>
     <el-menu
-    :default-active="activeIdx"
     class="el-menu-demo"
     mode="horizontal"
     @select="handleSelect"
