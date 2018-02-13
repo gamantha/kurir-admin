@@ -1,7 +1,7 @@
 import * as types from './mutation-types';
 import ProposalService from './service';
 
-import { gets, getInit, updateProposal } from './actions';
+import { gets, updateProposal } from './actions';
 
 const initialState = {
   proposals: [],
@@ -16,8 +16,8 @@ const getters = {
 
 // actions
 const actions = {
-  async getProposal({ commit }, auth) {
-    const result = await getInit(auth);
+  async getProposal({ commit }) {
+    const result = await gets();
     commit(types.GET_PROPOSAL, result);
   },
   async updateProposal({ commit }, payload) {

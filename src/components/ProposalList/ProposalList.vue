@@ -31,7 +31,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import VueCookie from 'vue-cookie';
 import Navbar from '../Navbar/Navbar';
 
 export default {
@@ -109,10 +108,7 @@ export default {
   },
   methods: {
     async initProposal() {
-      const Authorization = {
-        Authorization: `bearer ${VueCookie.get('token')}`,
-      };
-      await this.$store.dispatch('getProposal', Authorization);
+      await this.$store.dispatch('getProposal');
     },
     async updatePropose(payload) {
       await this.$store.dispatch('updateProposal', payload);

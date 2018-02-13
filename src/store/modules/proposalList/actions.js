@@ -3,17 +3,6 @@ import Helpers from '../../../helpers';
 
 const helpers = new Helpers();
 
-export const getInit = async (auth) => {
-  try {
-    const result = await helpers.allInstance.get('api/user/proposal', {
-      headers: auth,
-    });
-    return result.data;
-  } catch (error) {
-    return error.response.data;
-  }
-};
-
 export const gets = async () => {
   try {
     const result = await helpers.authInstance.get('api/user/proposal', {
