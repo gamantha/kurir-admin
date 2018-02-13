@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import VueCookie from 'vue-cookie';
 import { mapGetters } from 'vuex';
 import Navbar from '../Navbar/Navbar';
 
@@ -59,7 +58,7 @@ export default {
       ],
       checkboxFilterDef: {
         colProps: {
-          span: 19,
+          span: 8,
         },
         props: 'role',
         def: [
@@ -90,10 +89,7 @@ export default {
   },
   methods: {
     async initUser() {
-      const Authorization = {
-        Authorization: `bearer ${VueCookie.get('token')}`,
-      };
-      await this.$store.dispatch('getUser', Authorization);
+      await this.$store.dispatch('getUser');
     },
   },
   mounted() {
