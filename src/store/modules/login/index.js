@@ -36,8 +36,9 @@ const mutations = {
   },
   MESSAGE(state, payload) {
     if (payload.success) {
-      VueCookie.set('token', state.user.accessToken);
-      router.push('proposal');
+      const token = state.user.accessToken;
+      VueCookie.set('token', token);
+      if (token) router.push('proposal');
       state.status = true;
     } else {
       state.status = false;

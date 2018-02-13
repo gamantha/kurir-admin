@@ -1,2 +1,3 @@
-export const GETS = 'GETS';
-export const UPDATE_PROPOSE = 'UPDATE_PROPOSE';
+export const GET_PROPOSAL = 'GET_PROPOSAL';
+export const UPDATE_PROPOSAL = 'UPDATE_PROPOSAL';
+export const CREATE_SITE_ADMIN = 'CREATE_SITE_ADMIN';

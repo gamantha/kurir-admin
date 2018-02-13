@@ -1,48 +1,93 @@
+import ElementUI from 'element-ui';
 import * as types from './mutation-types';
 import ProposalService from './service';
 
-import { gets, updatePropose } from './actions';
+import { gets, createSiteAdmin, updateProposal } from './actions';
 
 const initialState = {
   proposals: [],
   proposalMessage: null,
+  siteAdminMsg: null,
 };
 
 // getters
 const getters = {
   proposals: state => state.proposals,
   proposalMessage: state => state.proposalMessage,
+  siteAdminMsg: state => state.siteAdminMsg,
 };
 
 // actions
 const actions = {
-  async gets({ commit }) {
+  async getProposal({ commit }) {
     const result = await gets();
-    commit(types.GETS, result);
+    commit(types.GET_PROPOSAL, result);
   },
-  async updatePropose({ commit }, payload) {
-    const result = await updatePropose(payload);
+  async updateProposal({ commit }, payload) {
+    const result = await updateProposal(payload);
     const getAgain = await gets();
-    commit(types.UPDATE_PROPOSE, result);
-    commit(types.GETS, getAgain);
+    commit(types.UPDATE_PROPOSAL, result);
+    const msg = `${payload.status}`;
+    if (msg === 'verified') {
+      ElementUI.Message({
+        message: `User dengan ID ${payload.userId} berhasil diverifikasi. Role baru: sender+kurir`,
+        type: 'success',
+      });
+    } else if (msg === 'rejected') {
+      ElementUI.Message({
+        message: `User dengan ID ${payload.userId} ditolak menjadi kurir.`,
+        type: 'success',
+      });
+    } else {
+      ElementUI.Message({
+        message: `User dengan ID ${
+          payload.userId
+        } status proposalnya menjadi waiting. Role baru: sender`,
+        type: 'success',
+      });
+    }
+    commit(types.GET_PROPOSAL, getAgain);
+  },
+  async createSiteAdmin({ commit }, payload) {
+    const result = await createSiteAdmin(payload);
+    commit(types.CREATE_SITE_ADMIN, result);
   },
 };
 
 const mutations = {
-  GETS(state, payload) {
+  GET_PROPOSAL(state, payload) {
     if (payload.meta.success) {
       state.proposals = ProposalService.encodeDate(payload.data);
     } else {
       state.proposals = [];
     }
   },
-  UPDATE_PROPOSE(state, payload) {
+  UPDATE_PROPOSAL(state, payload) {
     // const affectedRow = state.proposals.filter(each => each.UserId === payload.data.userId);
     // const affectedIdx = state.proposals.findIndex(each => each.UserId === payload.data.userId);
     if (payload.meta.success) {
       state.proposalMessage = payload.meta.message;
     } else {
       state.proposalMessage = payload.meta.message;
+      ElementUI.Message({
+        message: `${payload.meta.message}`,
+        type: 'error',
+      });
+    }
+  },
+  CREATE_SITE_ADMIN(state, payload) {
+    if (payload.meta.success) {
+      state.siteAdminMsg = payload.meta.message;
+      ElementUI.Message({
+        message: `${payload.meta.message}`,
+        type: 'success',
+      });
+    } else {
+      state.siteAdminMsg = payload.meta.message;
+      ElementUI.Message({
+        message: `${payload.meta.message}`,
+        type: 'error',
+      });
     }
   },
 };
