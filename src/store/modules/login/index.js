@@ -29,6 +29,11 @@ const actions = {
     commit(types.MESSAGE, result);
     commit(types.FINISHED);
   },
+  async logout({ commit }) {
+    commit(types.LOADING);
+    commit(types.LOGOUT);
+    commit(types.FINISHED);
+  },
 };
 
 const mutations = {
@@ -60,6 +65,10 @@ const mutations = {
   },
   USER(state, payload) {
     state.user = payload;
+  },
+  LOGOUT(state) {
+    VueCookie.delete('token');
+    state.user = null;
   },
 };
 
