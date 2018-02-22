@@ -49,15 +49,14 @@ const mutations = {
         VueCookie.set('token', accessToken);
         if (accessToken) router.push('proposal');
         state.status = true;
+        state.message = payload.meta.message;
       } else {
         state.status = false;
-        state.message = {
-          message: 'unauthorized to access the page.',
-        };
+        state.message = 'unauthorized to access the page.';
       }
     } else {
       state.status = false;
-      state.message = payload;
+      state.message = payload.meta.message;
     }
   },
   FINISHED(state) {

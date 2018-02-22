@@ -59,7 +59,7 @@ export default {
       this.$notify({
         group: 'login',
         title: 'Info',
-        text: this.message.message,
+        text: this.message,
       });
     },
   },
