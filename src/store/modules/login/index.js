@@ -3,6 +3,7 @@ import router from '../../../router';
 import * as types from './mutation-types';
 
 import { login } from './actions';
+import { ROLES } from '../../../constants';
 
 // const namespaced = true;
 
@@ -25,7 +26,12 @@ const actions = {
     const result = await login(payload);
     commit(types.LOADING);
     commit(types.USER, result.data);
-    commit(types.MESSAGE, result.meta);
+    commit(types.MESSAGE, result);
+    commit(types.FINISHED);
+  },
+  async logout({ commit }) {
+    commit(types.LOADING);
+    commit(types.LOGOUT);
     commit(types.FINISHED);
   },
 };
@@ -35,21 +41,34 @@ const mutations = {
     state.loading = true;
   },
   MESSAGE(state, payload) {
-    if (payload.success) {
-      const token = state.user.accessToken;
-      VueCookie.set('token', token);
-      if (token) router.push('proposal');
-      state.status = true;
+    if (payload.meta.success) {
+      const { data } = payload;
+      const { accessToken } = data;
+      const { role } = data.User;
+      if (role.toLowerCase() === ROLES.SYSADMIN) {
+        VueCookie.set('token', accessToken);
+        if (accessToken) router.push('proposal');
+        state.status = true;
+      } else {
+        state.status = false;
+        state.message = {
+          message: 'unauthorized to access the page.',
+        };
+      }
     } else {
       state.status = false;
+      state.message = payload;
     }
-    state.message = payload;
   },
   FINISHED(state) {
     state.loading = false;
   },
   USER(state, payload) {
     state.user = payload;
+  },
+  LOGOUT(state) {
+    VueCookie.delete('token');
+    state.user = null;
   },
 };
 

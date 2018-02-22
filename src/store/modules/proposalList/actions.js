@@ -5,7 +5,7 @@ const helpers = new Helpers();
 
 export const gets = async () => {
   try {
-    const result = await helpers.instance.get('api/proposal', {
+    const result = await helpers.instance.get('proposal', {
       headers: {
         Authorization: `bearer ${VueCookie.get('token')}`,
       },
@@ -18,7 +18,7 @@ export const gets = async () => {
 
 export const updateProposal = async (payload) => {
   try {
-    const result = await helpers.instance.put('api/proposal', payload, {
+    const result = await helpers.instance.put('proposal', payload, {
       headers: {
         Authorization: `bearer ${VueCookie.get('token')}`,
       },
@@ -31,7 +31,7 @@ export const updateProposal = async (payload) => {
 
 export const createSiteAdmin = async (payload) => {
   try {
-    const result = await helpers.instance.post('api/user/create', payload, {
+    const result = await helpers.instance.post('user/create', payload, {
       headers: {
         Authorization: `bearer ${VueCookie.get('token')}`,
       },

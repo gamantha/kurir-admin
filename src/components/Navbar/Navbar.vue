@@ -14,7 +14,11 @@
         <router-link to="user">User List</router-link>
       </el-menu-item>
       <el-menu-item index="/">
-        <router-link to="/">Back to Login</router-link>
+        <router-link
+            v-on:click.native="onClickLogout"
+            to="/">
+            Back to Login
+        </router-link>
       </el-menu-item>
     </el-menu>
   </div>
@@ -33,6 +37,9 @@ export default {
   methods: {
     handleSelect(key) {
       this.activeIdx = key;
+    },
+    async onClickLogout() {
+      await this.$store.dispatch('logout');
     },
   },
 };

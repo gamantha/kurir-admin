@@ -1,13 +1,11 @@
 import axios from 'axios';
 import moment from 'moment';
-
-// const localBaseUrl = 'http://localhost:3000/';
-const devBaseUrl = 'https://kurirbackend-dev.herokuapp.com/';
+import { BASE_API_URL } from '../constants';
 
 class Helpers {
   constructor() {
     this.instance = axios.create({
-      baseURL: devBaseUrl,
+      baseURL: BASE_API_URL,
     });
   }
 
