@@ -5,3 +5,14 @@ export const ROLES = {
   SENDER: 'sender',
   KURIR: 'kurir',
 };
+export const progressBarOptions = {
+  color: '#bffaf3',
+  failedColor: '#874b4b',
+  thickness: '5px',
+  transition: {
+    speed: '0.2s',
+    opacity: '0.6s',
+    termination: 300,
+  },
+  location: 'top',
+};
