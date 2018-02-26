@@ -4,9 +4,9 @@ import app from '../main';
 
 const instance = axios.create({
   baseURL: BASE_API_URL,
-  validateStatus(status) {
-    return status < 500;
-  },
+  // validateStatus(status) {
+  //   return status < 500;
+  // },
 });
 
 instance.interceptors.request.use((config) => {
