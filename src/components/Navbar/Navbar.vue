@@ -17,7 +17,7 @@
         <router-link
             v-on:click.native="onClickLogout"
             to="/">
-            Back to Login
+            Logout
         </router-link>
       </el-menu-item>
     </el-menu>
