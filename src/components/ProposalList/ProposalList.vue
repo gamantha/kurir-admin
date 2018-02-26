@@ -5,7 +5,8 @@
     <sui-modal v-model="open">
       <sui-modal-header>Create New Site Admin</sui-modal-header>
       <sui-modal-content>
-        <el-form status-icon :model="siteAdminForm" :rules="rules" ref="siteAdminForm" label-width="120px" class="demo-ruleForm">
+        <el-form status-icon :model="siteAdminForm" :rules="rules"
+        ref="siteAdminForm" label-width="120px" class="demo-ruleForm">
           <el-form-item label="Username" prop="username">
             <el-input v-model="siteAdminForm.username"></el-input>
           </el-form-item>
@@ -38,7 +39,7 @@
         sortable="custom">
         </el-table-column>
         <el-table-column label="Actions" min-width="100px">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button v-for="button in customButtonsForRow(scope.row)"
             :key="button.name"
             type="text"
@@ -53,7 +54,7 @@
 </template>
 
 <script>
-import VueCookie from 'vue-cookie';
+// import VueCookie from 'vue-cookie';
 import { mapGetters } from 'vuex';
 import Navbar from '../Navbar/Navbar';
 
@@ -204,13 +205,12 @@ export default {
       this.open = !this.open;
     },
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.createSiteAdmin(this.siteAdminForm);
-        } else {
-          console.log('error submit!!');
-          return false;
+          return true;
         }
+        return false;
       });
     },
     async createSiteAdmin(payload) {

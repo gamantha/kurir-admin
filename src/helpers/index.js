@@ -1,10 +1,11 @@
 import axios from 'axios';
 import moment from 'moment';
+import { BASE_API_URL } from '../constants';
 
 class Helpers {
   constructor() {
     this.instance = axios.create({
-      baseURL: 'http://localhost:3000/',
+      baseURL: BASE_API_URL,
     });
   }
 
