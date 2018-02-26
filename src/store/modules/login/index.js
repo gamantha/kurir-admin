@@ -25,21 +25,9 @@ const getters = {
 const actions = {
   async login({ commit }, payload) {
     const result = await login(payload);
-    const msg = result.meta.message;
     commit(types.LOADING);
     commit(types.USER, result.data);
     commit(types.MESSAGE, result);
-    if (result.meta.success) {
-      ElementUI.Message({
-        message: msg,
-        type: 'success',
-      });
-    } else {
-      ElementUI.Message({
-        message: msg,
-        type: 'error',
-      });
-    }
     commit(types.FINISHED);
   },
   async logout({ commit }) {
@@ -54,6 +42,7 @@ const mutations = {
     state.loading = true;
   },
   MESSAGE(state, payload) {
+    let type = null;
     if (payload.meta.success) {
       const { data } = payload;
       const { accessToken } = data;
@@ -62,15 +51,22 @@ const mutations = {
         VueCookie.set('token', accessToken);
         if (accessToken) router.push('proposal');
         state.status = true;
+        type = 'success';
         state.message = payload.meta.message;
       } else {
         state.status = false;
+        type = 'error';
         state.message = 'unauthorized to access the page.';
       }
     } else {
       state.status = false;
+      type = 'error';
       state.message = payload.meta.message;
     }
+    ElementUI.Message({
+      message: state.message,
+      type,
+    });
   },
   FINISHED(state) {
     state.loading = false;
