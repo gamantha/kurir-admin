@@ -1,4 +1,5 @@
 import VueCookie from 'vue-cookie';
+import ElementUI from 'element-ui';
 import router from '../../../router';
 import * as types from './mutation-types';
 
@@ -24,9 +25,21 @@ const getters = {
 const actions = {
   async login({ commit }, payload) {
     const result = await login(payload);
+    const msg = result.meta.message;
     commit(types.LOADING);
     commit(types.USER, result.data);
     commit(types.MESSAGE, result);
+    if (result.meta.success) {
+      ElementUI.Message({
+        message: msg,
+        type: 'success',
+      });
+    } else {
+      ElementUI.Message({
+        message: msg,
+        type: 'error',
+      });
+    }
     commit(types.FINISHED);
   },
   async logout({ commit }) {
