@@ -19,7 +19,7 @@ export default {
     this.$router.beforeEach((to, from, next) => {
       //  does the page we want to go to have a meta.progress object
       if (to.meta.progress !== undefined) {
-        let meta = to.meta.progress;
+        const meta = to.meta.progress;
         // parse meta tags
         this.$Progress.parseMeta(meta);
       }
@@ -29,7 +29,7 @@ export default {
       next();
     });
     //  hook the progress bar to finish after we've finished moving router-view
-    this.$router.afterEach((to, from) => {
+    this.$router.afterEach(() => {
       //  finish the progress bar
       this.$Progress.finish();
     });
