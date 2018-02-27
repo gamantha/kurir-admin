@@ -281,7 +281,7 @@ export default {
           handler: () => {
             const payload = {
               status: 'waiting',
-              userId: row.UserId,
+              UserId: row.UserId,
             };
             this.updatePropose(payload);
             // this.$message(`${row.User} statusnya waiting`);
