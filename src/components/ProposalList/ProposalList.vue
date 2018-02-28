@@ -2,6 +2,20 @@
   <div>
     <navbar/>
     <div class="top">
+    <sui-modal v-model="openReject">
+      <sui-modal-header>Reject Proposal</sui-modal-header>
+      <sui-modal-content>
+        <el-form status-icon :model="rejectPayload"
+        ref="rejectionForm" label-width="120px" class="demo-ruleForm">
+          <el-form-item label="Reason" prop="reason">
+            <el-input v-model="rejectPayload.rejectReason"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitRejectForm()">Submit</el-button>
+          </el-form-item>
+        </el-form>
+      </sui-modal-content>
+    </sui-modal>
     <sui-modal v-model="open">
       <sui-modal-header>Create New Site Admin</sui-modal-header>
       <sui-modal-content>
@@ -82,6 +96,7 @@ export default {
     };
     return {
       open: false,
+      openReject: false,
       message: null,
       titles: [
         {
@@ -142,6 +157,11 @@ export default {
         password: '',
         retype: '',
         role: 'siteadmin',
+      },
+      rejectPayload: {
+        rejectReason: '',
+        UserId: '',
+        status: 'rejected',
       },
       rules: {
         email: [
@@ -213,6 +233,13 @@ export default {
         return false;
       });
     },
+    submitRejectForm() {
+      this.updatePropose(this.rejectPayload);
+      this.openReject = false;
+    },
+    show() {
+      this.openReject = true;
+    },
     async createSiteAdmin(payload) {
       await this.$store.dispatch('createSiteAdmin', payload);
     },
@@ -230,7 +257,7 @@ export default {
             handler: () => {
               const payload = {
                 status: 'verified',
-                userId: row.UserId,
+                UserId: row.UserId,
               };
               this.updatePropose(payload);
               // this.$message(`${row.User} diterima sebagai kurir`);
@@ -239,11 +266,10 @@ export default {
           {
             name: 'Reject',
             handler: () => {
-              const payload = {
-                status: 'rejected',
-                userId: row.UserId,
-              };
-              this.updatePropose(payload);
+              this.rejectPayload.status = 'rejected';
+              this.rejectPayload.UserId = row.UserId;
+              this.show();
+              // this.updatePropose(payload);
               // this.$message(`${row.User} ditolak sebagai kurir`);
             },
           },
@@ -255,7 +281,7 @@ export default {
           handler: () => {
             const payload = {
               status: 'waiting',
-              userId: row.UserId,
+              UserId: row.UserId,
             };
             this.updatePropose(payload);
             // this.$message(`${row.User} statusnya waiting`);
