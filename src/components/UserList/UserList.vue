@@ -1,13 +1,13 @@
 <template>
   <div>
-    <navbar/>
+    <Navbar/>
     <div class="top">
       <data-tables
       :data="userList"
       :checkbox-filter-def="checkboxFilterDef"
       :table-props="tableProps"
-      :pagination-def="paginationDef">
-        >
+      :pagination-def="paginationDef"
+      >
         <el-table-column v-for="title in titles"
         :prop="title.prop"
         :label="title.label"
@@ -26,7 +26,7 @@ import Navbar from '../Navbar/Navbar';
 export default {
   name: 'UserList',
   components: {
-    navbar: Navbar,
+    Navbar,
   },
   data() {
     return {
@@ -89,9 +89,7 @@ export default {
   },
   methods: {
     async initUser() {
-      this.$Progress.start();
-      const result = await this.$store.dispatch('getUser');
-      if (result) this.$Progress.finish();
+      await this.$store.dispatch('getUser');
     },
   },
   mounted() {
@@ -103,8 +101,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.top {
-  margin: 20px;
-}
+<style>
+
 </style>

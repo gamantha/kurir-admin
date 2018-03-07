@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar/>
+    <Navbar/>
     <div class="top">
     <sui-modal v-model="openReject">
       <sui-modal-header>Reject Proposal</sui-modal-header>
@@ -44,8 +44,8 @@
       :checkbox-filter-def="checkboxFilterDef"
       :table-props="tableProps"
       :actions-def="actionsDef"
-      :pagination-def="paginationDef">
-        >
+      :pagination-def="paginationDef"
+      >
         <el-table-column v-for="title in titles"
         :prop="title.prop"
         :label="title.label"
@@ -218,14 +218,15 @@ export default {
     };
   },
   components: {
-    navbar: Navbar,
+    Navbar,
   },
   methods: {
     toggle() {
       this.open = !this.open;
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      // eslint-disable-next-line
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.createSiteAdmin(this.siteAdminForm);
           return true;
@@ -299,8 +300,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.top {
-  margin: 20px;
-}
+<style>
+
 </style>
