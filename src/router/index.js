@@ -6,7 +6,7 @@ import UserList from '../components/UserList/UserList';
 import ShippingDetails from '../components/ShippingDetails/ShippingDetails';
 import Unauthorized from '../components/Unauthorized/Unauthorized';
 import FourOhFour from '../components/FourOhFour/FourOhFour';
-import { sysAdminCheck } from '../helpers/auth';
+import { sysAdminCheck, bothAdmin } from '../helpers/auth';
 
 Vue.use(Router);
 
@@ -33,7 +33,7 @@ export default new Router({
       path: '/shipping-details',
       name: 'ShippingDetails',
       component: ShippingDetails,
-      beforeEnter: sysAdminCheck,
+      beforeEnter: bothAdmin,
     },
     {
       path: '/unauthorized',
