@@ -7,11 +7,14 @@
     @select="handleSelect"
     router="router"
       >
-      <el-menu-item index="proposal">
+      <el-menu-item v-if="userRole === 'sysadmin'" index="proposal">
         <router-link to="proposal">Proposal List</router-link>
       </el-menu-item>
-      <el-menu-item index="user">
+      <el-menu-item v-if="userRole === 'sysadmin'" index="user">
         <router-link to="user">User List</router-link>
+      </el-menu-item>
+      <el-menu-item v-if="userRole === 'sysadmin'" index="shipping-details">
+        <router-link to="shipping-details">Shipping Details</router-link>
       </el-menu-item>
       <el-menu-item index="/">
         <router-link
@@ -26,12 +29,16 @@
 </template>
 
 <script>
+import VueCookie from 'vue-cookie';
+import Helper from '../../helpers';
+
 export default {
   name: 'Navbar',
   data() {
     return {
       activeIdx: 'proposal',
       router: true,
+      userRole: Helper.parseToken(VueCookie.get('token')).role,
     };
   },
   methods: {
