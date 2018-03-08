@@ -55,12 +55,6 @@ export default {
   methods: {
     async onClickLogin(username, password) {
       await this.$store.dispatch('login', { username, password });
-      // TODO move this notify, for conditional purpose
-      this.$notify({
-        group: 'login',
-        title: 'Info',
-        text: this.message.message,
-      });
     },
   },
   computed: {
