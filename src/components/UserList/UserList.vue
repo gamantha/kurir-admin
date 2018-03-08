@@ -78,7 +78,7 @@ export default {
       },
       tableProps: {
         border: true,
-        stripe: false,
+        stripe: true,
       },
       paginationDef: {
         pageSize: 5,
