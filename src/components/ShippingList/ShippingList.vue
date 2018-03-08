@@ -35,14 +35,15 @@
       </sui-modal>
       <data-tables
       :data="items"
-      :table-props="tableProps"
       :pagination-def="paginationDef"
       :search-def="searchDef"
+      :checkbox-filter-def="checkboxFilterDef"
       >
         <el-table-column v-for="title in titles"
         :prop="title.prop"
         :label="title.label"
         :key="title.label"
+        :table-props="tableProps"
         sortable="custom">
         </el-table-column>
         <el-table-column label="Actions" min-width="100px">
@@ -65,7 +66,7 @@ import { mapGetters } from 'vuex';
 import Navbar from '../Navbar/Navbar';
 
 export default {
-  name: 'ShippingDetails',
+  name: 'ShippingList',
   data() {
     return {
       isDetailsOpened: false,
@@ -84,13 +85,17 @@ export default {
           label: 'Receiver',
         },
         {
-          prop: 'Courier',
+          prop: 'Courier.User.email',
           label: 'Courier',
+        },
+        {
+          prop: 'status',
+          label: 'Status',
         },
       ],
       tableProps: {
         border: true,
-        stripe: false,
+        stripe: true,
       },
       paginationDef: {
         pageSize: 5,
@@ -103,14 +108,62 @@ export default {
           props: 'ticketNumber',
         },
       },
+      checkboxFilterDef: {
+        colProps: {
+          span: 15,
+        },
+        props: 'status',
+        def: [
+          {
+            code: 'stillWaitingCourier',
+            name: 'Still Waiting For Courier',
+          },
+          {
+            code: 'firstDropsite',
+            name: 'At First Dropsite',
+          },
+          {
+            code: 'pickedByCourier',
+            name: 'Picked By Courier',
+          },
+          {
+            code: 'startDroppoint',
+            name: 'At Origin Droppoint',
+          },
+          {
+            code: 'onTravel',
+            name: 'On Travel',
+          },
+          {
+            code: 'endDroppoint',
+            name: 'At Destination Droppoint',
+          },
+          {
+            code: 'ontheway',
+            name: 'On The Way To Receiver',
+          },
+          {
+            code: 'received',
+            name: 'Received',
+          },
+          {
+            code: 'canceled',
+            name: 'Canceled',
+          },
+        ],
+      },
       customButtonsForRow(row) {
         const self = row;
         return [
           {
             name: 'Details',
             handler: () => {
-              this.isDetailsOpened = !this.isDetailsOpened;
               this.selectedItem = this.getItemByTicketNumber(self.ticketNumber);
+              this.$router.push({
+                name: 'ShippingDetail',
+                params: this.selectedItem,
+                path: `/shipping/${this.selectedItem.ticketNumber}`,
+              });
             },
           },
         ];
