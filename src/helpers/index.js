@@ -6,6 +6,10 @@ class Helpers {
     return moment(time).format('D MMM YYYY');
   }
 
+  static fromDate(time) {
+    return moment(time).fromNow();
+  }
+
   static parseToken(token) {
     return jwt.verify(token, 'asdsa');
   }
