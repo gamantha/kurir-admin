@@ -1,7 +1,21 @@
 <template>
   <div>
-    <navbar/>
+    <Navbar/>
     <div class="top">
+    <sui-modal v-model="openReject">
+      <sui-modal-header>Reject Proposal</sui-modal-header>
+      <sui-modal-content>
+        <el-form status-icon :model="rejectPayload"
+        ref="rejectionForm" label-width="120px" class="demo-ruleForm">
+          <el-form-item label="Reason" prop="reason">
+            <el-input v-model="rejectPayload.rejectReason"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitRejectForm()">Submit</el-button>
+          </el-form-item>
+        </el-form>
+      </sui-modal-content>
+    </sui-modal>
     <sui-modal v-model="open">
       <sui-modal-header>Create New Site Admin</sui-modal-header>
       <sui-modal-content>
@@ -30,8 +44,8 @@
       :checkbox-filter-def="checkboxFilterDef"
       :table-props="tableProps"
       :actions-def="actionsDef"
-      :pagination-def="paginationDef">
-        >
+      :pagination-def="paginationDef"
+      >
         <el-table-column v-for="title in titles"
         :prop="title.prop"
         :label="title.label"
@@ -82,6 +96,7 @@ export default {
     };
     return {
       open: false,
+      openReject: false,
       message: null,
       titles: [
         {
@@ -143,6 +158,11 @@ export default {
         retype: '',
         role: 'siteadmin',
       },
+      rejectPayload: {
+        rejectReason: '',
+        UserId: '',
+        status: 'rejected',
+      },
       rules: {
         email: [
           {
@@ -188,7 +208,7 @@ export default {
       },
       tableProps: {
         border: true,
-        stripe: false,
+        stripe: true,
       },
       paginationDef: {
         pageSize: 5,
@@ -198,20 +218,28 @@ export default {
     };
   },
   components: {
-    navbar: Navbar,
+    Navbar,
   },
   methods: {
     toggle() {
       this.open = !this.open;
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      // eslint-disable-next-line
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.createSiteAdmin(this.siteAdminForm);
           return true;
         }
         return false;
       });
+    },
+    submitRejectForm() {
+      this.updatePropose(this.rejectPayload);
+      this.openReject = false;
+    },
+    show() {
+      this.openReject = true;
     },
     async createSiteAdmin(payload) {
       await this.$store.dispatch('createSiteAdmin', payload);
@@ -230,7 +258,7 @@ export default {
             handler: () => {
               const payload = {
                 status: 'verified',
-                userId: row.UserId,
+                UserId: row.UserId,
               };
               this.updatePropose(payload);
               // this.$message(`${row.User} diterima sebagai kurir`);
@@ -239,11 +267,10 @@ export default {
           {
             name: 'Reject',
             handler: () => {
-              const payload = {
-                status: 'rejected',
-                userId: row.UserId,
-              };
-              this.updatePropose(payload);
+              this.rejectPayload.status = 'rejected';
+              this.rejectPayload.UserId = row.UserId;
+              this.show();
+              // this.updatePropose(payload);
               // this.$message(`${row.User} ditolak sebagai kurir`);
             },
           },
@@ -255,7 +282,7 @@ export default {
           handler: () => {
             const payload = {
               status: 'waiting',
-              userId: row.UserId,
+              UserId: row.UserId,
             };
             this.updatePropose(payload);
             // this.$message(`${row.User} statusnya waiting`);
@@ -273,8 +300,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.top {
-  margin: 20px;
-}
+<style>
+
 </style>

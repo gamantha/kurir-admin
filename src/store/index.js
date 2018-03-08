@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import createLogger from 'vuex/dist/logger';
 import loginState from './modules/login';
 import proposalState from './modules/proposalList';
+import shippingDetailState from './modules/shippingDetails';
 import UserState from './modules/userList';
 
 Vue.use(Vuex);
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     loginState,
     proposalState,
     UserState,
+    shippingDetailState,
   },
   strict: debug,
   plugins: debug ? [createLogger()] : [],

@@ -1,0 +1,4 @@
+export default {
+  GET_ITEMS: 'GET_ITEMS',
+  STORE_SELECTED_ITEM: 'STORE_SELECTED_ITEM',
+};

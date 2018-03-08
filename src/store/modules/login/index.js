@@ -47,9 +47,15 @@ const mutations = {
       const { data } = payload;
       const { accessToken } = data;
       const { role } = data.User;
-      if (role.toLowerCase() === ROLES.SYSADMIN) {
+      const sysadmin = role.toLowerCase() === ROLES.SYSADMIN;
+      const siteadmin = role.toLowerCase() === ROLES.SITEADMIN;
+      if (sysadmin || siteadmin) {
         VueCookie.set('token', accessToken);
-        if (accessToken) router.push('proposal');
+        if (accessToken && sysadmin) {
+          router.push('proposal');
+        } else {
+          router.push('shipping');
+        }
         state.status = true;
         type = 'success';
         state.message = payload.meta.message;
