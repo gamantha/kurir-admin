@@ -3,7 +3,8 @@ import Router from 'vue-router';
 import Login from '../components/Login/Login';
 import ProposalList from '../components/ProposalList/ProposalList';
 import UserList from '../components/UserList/UserList';
-import ShippingDetails from '../components/ShippingDetails/ShippingDetails';
+import ShippingList from '../components/ShippingList/ShippingList';
+import ShippingDetail from '../components/ShippingDetail/ShippingDetail';
 import Unauthorized from '../components/Unauthorized/Unauthorized';
 import FourOhFour from '../components/FourOhFour/FourOhFour';
 import { sysAdminCheck, bothAdmin } from '../helpers/auth';
@@ -30,9 +31,15 @@ export default new Router({
       beforeEnter: sysAdminCheck,
     },
     {
-      path: '/shipping-details',
-      name: 'ShippingDetails',
-      component: ShippingDetails,
+      path: '/shipping',
+      name: 'ShippingList',
+      component: ShippingList,
+      beforeEnter: bothAdmin,
+    },
+    {
+      path: '/shipping/:ticketNumber',
+      name: 'ShippingDetail',
+      component: ShippingDetail,
       beforeEnter: bothAdmin,
     },
     {
