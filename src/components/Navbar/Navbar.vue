@@ -13,8 +13,8 @@
       <el-menu-item v-if="userRole === 'sysadmin'" index="user">
         <router-link to="user">User List</router-link>
       </el-menu-item>
-      <el-menu-item v-if="userRole === 'sysadmin'" index="shipping-details">
-        <router-link to="shipping-details">Shipping Details</router-link>
+      <el-menu-item v-if="userRole === 'sysadmin'" index="shipping">
+        <router-link to="shipping">Shipping Details</router-link>
       </el-menu-item>
       <el-menu-item index="/">
         <router-link

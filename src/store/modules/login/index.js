@@ -54,7 +54,7 @@ const mutations = {
         if (accessToken && sysadmin) {
           router.push('proposal');
         } else {
-          router.push('shipping-details');
+          router.push('shipping');
         }
         state.status = true;
         type = 'success';
