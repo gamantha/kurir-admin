@@ -63,7 +63,8 @@
           <sui-table-cell>
             <sui-icon name="briefcase" /> Courier email
           </sui-table-cell>
-          <sui-table-cell v-if="this.getSelectedItem.Courier" colspan="3">{{ 
+          <sui-table-cell v-if="this.getSelectedItem.Courier" colspan="3">
+          {{
             this.getSelectedItem.Courier.User.email
           }}</sui-table-cell>
           <sui-table-cell v-else colspan="3">
@@ -91,7 +92,9 @@
           </sui-table-cell>
           <sui-table-cell colspan="2">{{ this.getSelectedItem.status }}</sui-table-cell>
           <sui-table-cell text-align="right">
-            Last updated: {{ this.decodeDate(this.getSelectedItem.updatedAt) }} / <strong>{{ this.fromDate(this.getSelectedItem.updatedAt) }}</strong>
+            Last updated:
+            {{ this.decodeDate(this.getSelectedItem.updatedAt) }} /
+            <strong>{{ this.fromDate(this.getSelectedItem.updatedAt) }}</strong>
           </sui-table-cell>
         </sui-table-row>
       </sui-table-body>
