@@ -159,6 +159,7 @@ export default {
             name: 'Details',
             handler: () => {
               this.selectedItem = this.getItemByTicketNumber(self.ticketNumber);
+              this.$store.dispatch('storeSelectedItem', this.selectedItem);
               this.$router.push({
                 name: 'ShippingDetail',
                 params: this.selectedItem,
