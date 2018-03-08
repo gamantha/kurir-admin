@@ -1,4 +1,5 @@
 import VueCookie from 'vue-cookie';
+import ElementUI from 'element-ui';
 import router from '../../../router';
 import * as types from './mutation-types';
 
@@ -41,6 +42,7 @@ const mutations = {
     state.loading = true;
   },
   MESSAGE(state, payload) {
+    let type = null;
     if (payload.meta.success) {
       const { data } = payload;
       const { accessToken } = data;
@@ -49,15 +51,22 @@ const mutations = {
         VueCookie.set('token', accessToken);
         if (accessToken) router.push('proposal');
         state.status = true;
+        type = 'success';
         state.message = payload.meta.message;
       } else {
         state.status = false;
+        type = 'error';
         state.message = 'unauthorized to access the page.';
       }
     } else {
       state.status = false;
+      type = 'error';
       state.message = payload.meta.message;
     }
+    ElementUI.Message({
+      message: state.message,
+      type,
+    });
   },
   FINISHED(state) {
     state.loading = false;

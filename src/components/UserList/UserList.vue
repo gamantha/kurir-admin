@@ -89,7 +89,9 @@ export default {
   },
   methods: {
     async initUser() {
-      await this.$store.dispatch('getUser');
+      this.$Progress.start();
+      const result = await this.$store.dispatch('getUser');
+      if (result) this.$Progress.finish();
     },
   },
   mounted() {
